@@ -3,49 +3,65 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  computed: {
+    ...Vuex.mapGetters({
+      selectedMailsCount: "selectedArchivedMailsCount",
+      mailsCount: "archiveMailsCount",
+      mails: "archiveMails",
+    }),
+  },
+  methods: {
+    ...Vuex.mapMutations([
+      "markSelectedArchiveAsRead",
+      "markSelectedArchiveAsUnarchived",
+      "toggleArchiveAsSelected",
+      "toggleSelectedById"
+    ]),
+  },
   template: `
-      <h1 class="inbox__selected">Emails selected (2)</h1>
+      <h1 class="inbox__selected">Emails selected ({{ selectedMailsCount }})</h1>
 
       <div class="inbox__action">
-        <input type="checkbox" indeterminate class="checkbox"/>
-        <button class="btn-secondary">Mark as read (r)</button>
-        <button class="btn-secondary">Unarchive (u)</button>
+        <input 
+          type="checkbox"
+          class="checkbox"
+          :indeterminate="selectedMailsCount > 0 && selectedMailsCount < mailsCount"
+          :checked="selectedMailsCount === mailsCount"
+          @click="toggleArchiveAsSelected"
+        />
+        <button 
+          class="btn-secondary"
+          @click="markSelectedArchiveAsRead"
+          @keydown.r="markSelectedArchiveAsRead"
+        >
+          Mark as read(r)
+        </button>
+        <button
+          class="btn-secondary"
+          @click="markSelectedArchiveAsUnarchived"
+          @keydown.u="markSelectedArchiveAsUnarchived"
+        >
+          Unarchive (u)
+        </button>
       </div>
 
       <div class="inbox__items">
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item">
-          <input type="checkbox" class="checkbox" />
-          <span>Your 7-figure plan goes</span>
-        </label>
-        <label class="inbox__item inbox__item--readed">
-          <input type="checkbox" class="checkbox" readonly />
-          <span>Your 7-figure plan goes</span>
-        </label>
+        <div 
+          class="inbox__item"
+          :class="{'inbox__item--readed': mail.read}"
+          v-for="mail in mails"
+          :key="mail.id"
+          @click=""
+        >
+          <input 
+            type="checkbox"
+            class="checkbox"
+            :checked="mail.selected"
+            :readonly="mail.read"
+            @click="toggleSelectedById(mail.id)"
+          />
+          <span>{{ mail.title }}</span>
+        </div>
       </div>
   `,
 };

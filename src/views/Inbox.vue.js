@@ -1,10 +1,5 @@
 export default {
   name: "Inbox",
-  data() {
-    return {
-      applyAll: false,
-    };
-  },
   computed: {
     ...Vuex.mapGetters({
       selectedMailsCount: "selectedInboxMailsCount",
@@ -16,8 +11,8 @@ export default {
     ...Vuex.mapMutations([
       "toggleSelectedById",
       "toggleInboxAsSelected",
-      "markSelectedAsRead",
-      "markSelectedAsArchived",
+      "markSelectedInboxAsRead",
+      "markSelectedInboxAsArchived",
     ]),
   },
   template: `
@@ -33,15 +28,15 @@ export default {
         />
         <button 
           class="btn-secondary"
-          @click="markSelectedAsRead"
-          @keydown.r="markSelectedAsRead"
+          @click="markSelectedInboxAsRead"
+          @keydown.r="markSelectedInboxAsRead"
         >
           Mark as read (r)
         </button>
         <button 
           class="btn-secondary"
-          @click="markSelectedAsArchived"
-          @keydown.a="markSelectedAsArchived"
+          @click="markSelectedInboxAsArchived"
+          @keydown.a="markSelectedInboxAsArchived"
         >
           Archive (a)
         </button>

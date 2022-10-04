@@ -67,7 +67,7 @@ export default Vuex.createStore({
      * @param {typeof this} getters
      * @returns {Array<Mail>}
      */
-    archivedMails(state) {
+    archiveMails(state) {
       return state.mails.filter((mail) => mail.archived === true);
     },
     /**
@@ -76,8 +76,8 @@ export default Vuex.createStore({
      * @param {typeof this} getters
      * @returns {number}
      */
-    archivedMailsCount(_state, getters) {
-      return getters.archivedMails.length;
+    archiveMailsCount(_state, getters) {
+      return getters.archiveMails.length;
     },
     /**
      * Selected Inbox Mails
@@ -207,12 +207,23 @@ export default Vuex.createStore({
       });
     },
     /**
+     * Mark selected Archive as Unarchived
+     * @param {State} state
+     */
+    markSelectedArchiveAsUnarchived(state) {
+      state.mails.map((mail) => {
+        if (mail.selected) {
+          mail.archived = false;
+        }
+      });
+    },
+    /**
      * Toggle all Inbox as Selected
      * @param {State} state
      * @returns {void}
      */
     toggleInboxAsSelected(state) {
-      const inboxMails = state.mails.filter((mail) => !mail.archive);
+      const inboxMails = state.mails.filter((mail) => !mail.archived);
       const unselectedInboxMails = inboxMails.filter((mail) => !mail.selected);
 
       if (unselectedInboxMails.length > 0) {
@@ -227,7 +238,7 @@ export default Vuex.createStore({
      * @returns {void}
      */
     toggleArchiveAsSelected(state) {
-      const archiveMails = state.mails.filter((mail) => mail.archive);
+      const archiveMails = state.mails.filter((mail) => mail.archived);
       const unselectedArchiveMails = archiveMails.filter(
         (mail) => !mail.selected
       );
@@ -247,7 +258,7 @@ export default Vuex.createStore({
     toggleSelectedById(state, id) {
       const mail = state.mails.find((mail) => mail.id === id);
       mail.selected = !mail.selected;
-      return mail
+      return mail;
     },
   },
 });
