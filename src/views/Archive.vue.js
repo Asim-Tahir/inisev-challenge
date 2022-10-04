@@ -15,7 +15,8 @@ export default {
       "markSelectedArchiveAsRead",
       "markSelectedArchiveAsUnarchived",
       "toggleArchiveAsSelected",
-      "toggleSelectedById"
+      "toggleSelectedById",
+      "updateMailDetail"
     ]),
   },
   template: `
@@ -51,7 +52,7 @@ export default {
           :class="{'inbox__item--readed': mail.read}"
           v-for="mail in mails"
           :key="mail.id"
-          @click=""
+          @click="updateMailDetail(mail)"
         >
           <input 
             type="checkbox"

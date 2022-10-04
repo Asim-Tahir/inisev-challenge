@@ -1,0 +1,32 @@
+dialog.modal {
+  border: none;
+  padding: 10px;
+
+  position: sticky;
+
+  width: 50%;
+  height: 100%;
+  max-height: max-content;
+
+  margin-left: auto;
+  padding-inline: 20px;
+}
+dialog.modal::backdrop {
+  background-color: #00000080;
+}
+
+dialog.modal .modal__close {
+  cursor: pointer;
+}
+dialog.modal .modal__actions {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 20px;
+}
+dialog.modal .modal__content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
