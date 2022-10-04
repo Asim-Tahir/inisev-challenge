@@ -1,4 +1,10 @@
 export default {
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
   template: `
     <dialog>
       <span>Close (esc)</span>
@@ -11,5 +17,5 @@ export default {
         </pre>
       </div>
     </dialog>
-  `
-}
+  `,
+};

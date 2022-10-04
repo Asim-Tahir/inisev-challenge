@@ -1,34 +1,69 @@
 export default {
   name: "Inbox",
   data() {
-    return {};
+    return {
+      applyAll: false,
+    };
   },
   computed: {
-    ...Vuex.mapState(["mails"]),
-    ...Vuex.mapGetters(["selectedsCount"]),
+    ...Vuex.mapGetters({
+      selectedMailsCount: "selectedInboxMailsCount",
+      mailsCount: "inboxMailsCount",
+      mails: "inboxMails",
+    }),
   },
   methods: {
-    ...Vuex.mapMutations(["markAllAsRead", "markAllAsArchive"]),
+    ...Vuex.mapMutations([
+      "toggleSelectedById",
+      "toggleInboxAsSelected",
+      "markSelectedAsRead",
+      "markSelectedAsArchived",
+    ]),
   },
   template: `
-      <h1 class="inbox__selected">Emails selected ({{ selectedsCount }})</h1>
+      <h1 class="inbox__selected">Emails selected ({{ selectedMailsCount }})</h1>
 
       <div class="inbox__action">
-        <input type="checkbox" :indeterminate="selectedsCount > 0" class="checkbox"/>
-        <button class="btn-secondary">Mark as read (r)</button>
-        <button class="btn-secondary">Archive (a)</button>
+        <input 
+          type="checkbox"
+          class="checkbox"
+          :indeterminate="selectedMailsCount > 0 && selectedMailsCount < mailsCount"
+          :checked="selectedMailsCount === mailsCount"
+          @click="toggleInboxAsSelected"
+        />
+        <button 
+          class="btn-secondary"
+          @click="markSelectedAsRead"
+          @keydown.r="markSelectedAsRead"
+        >
+          Mark as read (r)
+        </button>
+        <button 
+          class="btn-secondary"
+          @click="markSelectedAsArchived"
+          @keydown.a="markSelectedAsArchived"
+        >
+          Archive (a)
+        </button>
       </div>
 
       <div class="inbox__items">
-        <label 
+        <div 
           class="inbox__item"
           :class="{'inbox__item--readed': mail.read}"
           v-for="mail in mails"
           :key="mail.id"
+          @click=""
         >
-          <input type="checkbox" class="checkbox" :checked="mail.selected" :readonly="mail.read" />
+          <input 
+            type="checkbox"
+            class="checkbox"
+            :checked="mail.selected"
+            :readonly="mail.read"
+            @click="toggleSelectedById(mail.id)"
+          />
           <span>{{ mail.title }}</span>
-        </label>
+        </div>
       </div>
   `,
 };

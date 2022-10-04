@@ -10,7 +10,7 @@ export default {
       <div class="inbox__action">
         <input type="checkbox" indeterminate class="checkbox"/>
         <button class="btn-secondary">Mark as read (r)</button>
-        <button class="btn-secondary">Archive (a)</button>
+        <button class="btn-secondary">Unarchive (u)</button>
       </div>
 
       <div class="inbox__items">
