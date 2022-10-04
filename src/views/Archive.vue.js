@@ -1,4 +1,5 @@
 export default {
+  name: "Archive",
   data() {
     return {};
   },
