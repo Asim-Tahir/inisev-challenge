@@ -32,6 +32,21 @@ a {
   border: none;
   border-radius: 5px;
 }
+.btn-secondary {
+  font-size: 1rem;
+  text-align: start;
+  background-color: #f9f9f9;
+  padding-block: 5px;
+  padding-inline: 10px;
+  border: 2px solid #eff0f0;
+  border-radius: 5px;
+}
+
+input[type="checkbox"].checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #73c7fa;
+}
 
 .sidebar {
   width: 200px;
@@ -49,9 +64,4 @@ a {
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-}
-
-.inbox {
-  padding-inline: 100px;
-  padding-block: 20px;
 }

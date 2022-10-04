@@ -14,7 +14,6 @@ export default {
     </aside>
     <main class="inbox">
       <h2 class="inbox__title">{{ title }}</h2>
-      <h1 class="inbox__selected">Emails selected (2)</h2>
       <router-view></router-view>
     </main>
   `
