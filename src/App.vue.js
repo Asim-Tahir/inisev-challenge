@@ -10,11 +10,8 @@ export default {
     },
   },
   methods: {
-    async showModal(id) {
+    showModal(id) {
       this.$store.commit("updateCurrentMailID", id);
-      
-      await this.$nextTick();
-      console.log("ShowModal", this.$refs.dialog, this.currentMail);
       
       this.$refs.dialog.showModal();
     },
