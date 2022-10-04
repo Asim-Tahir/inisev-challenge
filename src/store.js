@@ -1,6 +1,6 @@
 /**
  * @typedef {{ id: number, title: string, description: string, read: boolean, archived: boolean, selected: boolean }} Mail
- * @typedef {{ mails: Array<Mail> }} State
+ * @typedef {{ mailDetail: Mail, mails: Array<Mail> }} State
  */
 export default Vuex.createStore({
   /**
@@ -8,6 +8,15 @@ export default Vuex.createStore({
    * @returns {State}
    */
   state: () => ({
+    mailDetail: {
+      open: false,
+      id: -1,
+      title: "",
+      description: "",
+      read: false,
+      archived: false,
+      selected: false,
+    },
     mails: [
       {
         id: 0,
@@ -116,16 +125,22 @@ export default Vuex.createStore({
       return getters.selectedArchivedMails.length;
     },
     /**
-     * Mail Detail By ID
+     * Get Mail By ID
      * @param {State} state
      * @param {typeof this} getters
      * @returns {(id: number) => Mail}
      */
-    mailDetailById: (state) => (id) => {
-      return state.mails.find((mail) => mail.id === id);
-    },
+    getMailByID: (state) => (id) => state.mails.find((mail) => mail.id === id),
   },
   mutations: {
+    /**
+     * Update mail detail
+     * @param {State} state
+     * @param {Partial<Mail>} mail
+     */
+    updateMailDetail(state, mail) {
+      Object.assign(state.mailDetail, mail);
+    },
     /**
      * Mark as Read by ID
      * @param {State} state
@@ -168,6 +183,28 @@ export default Vuex.createStore({
     markAsUnarchivedByID(state, id) {
       const mail = state.mails.find((mail) => mail.id === id);
       mail.archived = false;
+      return mail;
+    },
+    /**
+     * Mark as Selected by ID
+     * @param {State} state
+     * @param {number} id
+     * @returns {Mail}
+     */
+    markAsSelectedByID(state, id) {
+      const mail = state.mails.find((mail) => mail.id === id);
+      mail.selected = true;
+      return mail;
+    },
+    /**
+     * Mark as Unselected by ID
+     * @param {State} state
+     * @param {number} id
+     * @returns {Mail}
+     */
+    markAsUnselectedByID(state, id) {
+      const mail = state.mails.find((mail) => mail.id === id);
+      mail.selected = false;
       return mail;
     },
     /**
