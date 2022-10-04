@@ -1,22 +1,29 @@
 export default {
   computed: {
-    ...Vuex.mapState({ mail: "mailDetail" }),
     ...Vuex.mapGetters([
       "selectedInboxMailsCount",
       "selectedArchivedMailsCount",
+      "currentMail",
     ]),
     title() {
       return this.$route.path !== "/archive" ? "Inbox" : "Archive";
     },
   },
   methods: {
-    ...Vuex.mapMutations(["updateMailDetail"]),
-    showModal() {
+    async showModal(id) {
+      this.$store.commit("updateCurrentMailID", id);
+      
+      await this.$nextTick();
+      console.log("ShowModal", this.$refs.dialog, this.currentMail);
+      
       this.$refs.dialog.showModal();
     },
     closeModal() {
       this.$refs.dialog.close();
     },
+  },
+  provide() {
+    return { showModal: this.showModal };
   },
   template: `
     <aside class="sidebar">
@@ -37,39 +44,38 @@ export default {
       <button class="btn">Logout</button>
     </aside>
     <main class="inbox">
-      <dialog
-        open
-        class="modal"
-        ref="dialog"
-        v-click-outside="closeModal"
-      >
-        <u class="modal__close" @click="closeModal">
-          Close (esc)
-        </u>
-        <div class="modal__actions">
-          <button
-            class="btn-secondary"
-            @click="updateMailDetail({ read: true })"
-            @keydown.c="updateMailDetail({ read: true })"
-          >
-            Mark as read(r)
-          </button>
-          <button
-            class="btn-secondary"
-            @click="updateMailDetail({ archived: true })"
-            @keydown.a="updateMailDetail({ archived: true })"
-          >
-            Archive (a)
-          </button>
-        </div>
-        <article class="modal__content">
-          <h3>{{ mail.title }}</h3>
-          <p>{{ mail.description }}</p>
-        </article>
-      </dialog>
-
       <h2 class="inbox__title">{{ title }}</h2>
       <router-view></router-view>
     </main>
+
+    <dialog
+      ref="dialog"
+      class="modal"
+      v-click-outside="closeModal"
+    >
+      <u class="modal__close" @click="closeModal">
+        Close (esc)
+      </u>
+      <div class="modal__actions">
+        <button
+          class="btn-secondary"
+          @click="markAsReadByID(currentMail.id)"
+          @keydown.c="markAsReadByID(currentMail.id)"
+        >
+          Mark as read(r)
+        </button>
+        <button
+          class="btn-secondary"
+          @click="markAsArchivedByID(currentMail.id)"
+          @keydown.a="markAsArchivedByID(currentMail.id)"
+        >
+          Archive (a)
+        </button>
+      </div>
+      <article class="modal__content">
+        <h3>{{ currentMail?.title ?? "" }}</h3>
+        <p>{{ currentMail?.description ?? "" }}</p>
+      </article>
+    </dialog>
   `,
 };

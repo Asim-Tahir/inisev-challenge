@@ -1,6 +1,6 @@
 /**
  * @typedef {{ id: number, title: string, description: string, read: boolean, archived: boolean, selected: boolean }} Mail
- * @typedef {{ mailDetail: Mail, mails: Array<Mail> }} State
+ * @typedef {{ currentMailID: number, mails: Array<Mail> }} State
  */
 export default Vuex.createStore({
   /**
@@ -8,15 +8,7 @@ export default Vuex.createStore({
    * @returns {State}
    */
   state: () => ({
-    mailDetail: {
-      open: false,
-      id: -1,
-      title: "",
-      description: "",
-      read: false,
-      archived: false,
-      selected: false,
-    },
+    currentMailID: -1,
     mails: [
       {
         id: 0,
@@ -131,6 +123,15 @@ export default Vuex.createStore({
      * @returns {(id: number) => Mail}
      */
     getMailByID: (state) => (id) => state.mails.find((mail) => mail.id === id),
+    /**
+     * Get Mail By Current Mail ID
+     * @param {State} state
+     * @param {typeof this} getters
+     * @returns {Mail}
+     */
+    currentMail(state) {
+      return state.mails.find((mail) => mail.id === state.currentMailID);
+    },
   },
   mutations: {
     /**
@@ -138,8 +139,8 @@ export default Vuex.createStore({
      * @param {State} state
      * @param {Partial<Mail>} mail
      */
-    updateMailDetail(state, mail) {
-      Object.assign(state.mailDetail, mail);
+    updateCurrentMailID(state, id) {
+      state.currentMailID = id;
     },
     /**
      * Mark as Read by ID

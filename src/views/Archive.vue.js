@@ -19,6 +19,7 @@ export default {
       "updateMailDetail"
     ]),
   },
+  inject: ["showModal"],
   template: `
       <h1 class="inbox__selected">Emails selected ({{ selectedMailsCount }})</h1>
 
@@ -52,7 +53,7 @@ export default {
           :class="{'inbox__item--readed': mail.read}"
           v-for="mail in mails"
           :key="mail.id"
-          @click="updateMailDetail(mail)"
+          @click="showModal(mail.id)"
         >
           <input 
             type="checkbox"
